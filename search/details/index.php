@@ -108,6 +108,12 @@
         <form method="POST">
             <button type="submit" name="like" value="given" style="width:100px;"> LIKE </button>
         </form>
+<br/><br/>
+        <form method="POST">
+            <input type="text" name="comment" placeholder="Write ur comment here..">
+            <br/>
+            <button type="submit" name="com"> ADD COMMENT </button>
+        </form>
         
 <br/><br/>
 
@@ -121,7 +127,6 @@
         
             <button type="submit" name="fav" value="given">FAVORITES</button>
             <button type="submit" name="wl" value="given">WATCH LATER</button>
-            <button type="submit" name="wat" value="given">WATCHED</button>
         
     </form>
 <br/><br/><br/>
@@ -133,6 +138,47 @@ session_start();
 include_once 'searchid.php';
 include_once '../../includes/dbh-inc.php';
 $uid=$_SESSION['u_id'];
+
+/*
+if(isset($_POST['com']) ){
+    $id=$_GET['id'];
+    $comm=mysqli_real_escape_string($con,$_POST['comment']);
+    $sql="INSERT INTO comments (user_uid,time,comment,imdb) VALUES ('$uid',CURRENT_TIMESTAMP,'$comm','$id')";
+    $query=mysqli_query($con,$sql);
+    if($query)
+        echo '<script>alert("inserted comment")</script>';  
+    else
+        echo "nothing really happened <br/>";      
+}
+$stmt=$con->prepare("SELECT DISTINCT user_uid,time,comment,imdb FROM comments WHERE imdb = '$id' AND comment <> '' ORDER BY time DESC");
+$stmt->execute();
+$stmt->bind_result($user,$time,$comm,$mid);
+while($stmt->fetch()){
+    if($comm!=null)
+echo "<h3><pre>".$user." @ ".$time."</pre> </h3>".$comm;
+}
+*/
+$id = $_GET['id'];
+if(isset($_POST['com'])){
+    
+     $id = $_GET['id'];
+     $comment = mysqli_real_escape_string($con, $_POST['comment']);
+  
+     $sql = "INSERT INTO comments (imdb, time, user_uid, comment) VALUES ('$id',CURRENT_TIMESTAMP, '$uid', '$comment');";
+    mysqli_query($con, $sql);
+     
+    }
+    $stmt = $con->prepare("SELECT * FROM comments WHERE imdb='$id' ORDER BY time DESC");
+$stmt->execute();
+$stmt->bind_result($user, $time, $comment, $movieid);
+while($stmt->fetch()){
+
+  if($comment!=null){
+    echo "<h3><pre>".$user." @ ".$time."</pre> </h3>".$comment;
+  }
+
+   
+}
 
 
 
@@ -181,20 +227,20 @@ if(isset($_POST['wl'])){
     }
 }
 
-if(isset($_POST['wat'])){
-    if(isset($_GET['id']) && isset($_GET['name']) && isset($_GET['poster'])){
-        $id=$_GET['id'];
-        $name=$_GET['name'];
-        $poster=$_GET['poster'];
-        $sql="INSERT INTO watched (user_uid,imdbid,movname,poster) VALUES ('$uid','$id','$name','$poster')";
-        $query=mysqli_query($con,$sql);
-        if($query){
-            echo "Inserted as Watched ";
-        }
-        else
-            echo "You're unlucky dude..Try some other time..";
+
+if(isset($_GET['id']) && isset($_GET['name']) && isset($_GET['poster'])){
+    $id=$_GET['id'];
+    $name=$_GET['name'];
+    $poster=$_GET['poster'];
+    $sql="INSERT INTO watched (user_uid,imdbid,movname,poster) VALUES ('$uid','$id','$name','$poster')";
+    $query=mysqli_query($con,$sql);
+    if($query){
+        echo "<br/> ";
     }
+    else
+        echo "Cannot add as watched.. Try again loading the page..";
 }
+
 
 ?>
 
