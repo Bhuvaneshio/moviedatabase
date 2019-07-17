@@ -1,0 +1,11 @@
+Here is your key: 7da2dc37
+
+Please append it to all of your API requests,
+
+OMDb API: http://www.omdbapi.com/?i=tt3896198&apikey=7da2dc37
+
+Click the following URL to activate your key: http://www.omdbapi.com/apikey.aspx?VERIFYKEY=9a464ca6-5334-447c-aaf1-4bbe03b20da2
+If you did not make this request, please disregard this email.
+
+
+Youtube API : AIzaSyBwphg789ntL8W195s-KTTrRjnNKTO8PNk
